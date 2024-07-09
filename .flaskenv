@@ -4,7 +4,7 @@
 # running the flask command will set environment 
 # variables defined in the files .env and .flaskenv.
 
-FLASK_APP=2test # where to find your application in order to use it
+FLASK_APP=5test # where to find your application in order to use it
 # FLASK_APP=src/hello
 #     Sets the current working directory to src then imports hello.
 # FLASK_APP=hello.web
@@ -22,6 +22,7 @@ FLASK_ENV=development
 
 # #  reloader can watch additional files
 # FLASK_RUN_EXTRA_FILES=file1:dirA/file2:dirB/
+FLASK_RUN_EXTRA_FILES=.flaskenv
 
 # # reloader can also ignore files using fnmatch patterns  
 # # Multiple patterns are separated with :, or ; on Windows.
@@ -30,12 +31,13 @@ FLASK_ENV=development
 # # Debug mode will be enabled when FLASK_ENV is development, as described above. 
 # # If you want to control debug mode separately, use FLASK_DEBUG. 
 # # The value 1 enables it, 0 disables it.
-# FLASK_DEBUG=1
+FLASK_DEBUG=1
 
 
 # FLASK_RUN_PORT=8000 - flask run --port 8000
 #  variables use the pattern FLASK_COMMAND_OPTION
 # --debug / --no-debug            Set debug mode.
+
 #   -h, --host TEXT                 The interface to bind to.
 #   -p, --port INTEGER              The port to bind to.
 #   --cert PATH                     Specify a certificate file to use HTTPS.
