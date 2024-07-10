@@ -169,6 +169,90 @@ Code blocks are normally indented four spaces or one tab. When they’re in a li
 1. Open the file containing the Linux mascot.
 2. Marvel at its beauty.
 
-    ![Tux, the Linux mascot](/assets/images/tux.png)
+    ![Tux, the Linux mascot](imagformakrdown/image.jpg)
 
 3. Close the file.
+
+# Lists
+
+1. First item
+2. Second item
+3. Third item
+    - Indented item
+    - Indented item
+4. Fourth item
+
+# Code
+
+At the command prompt, type `nano`.
+
+# Escaping Backticks
+
+``Use `code` in your Markdown file.``
+
+# Code Blocks
+To create code blocks, indent every line of the block by at least four spaces or one tab.
+
+    <html>
+      <head>
+      </head>
+    </html>
+
+# Horizontal Rules
+To create a horizontal rule, use three or more asterisks (***), dashes (---), or underscores (___) on a line by themselves.
+
+***
+
+---
+
+_________________
+
+# Links
+
+My favorite search engine is [Duck Duck Go](https://duckduckgo.com).
+
+# Adding Titles
+
+My favorite search engine is [Duck Duck Go](https://duckduckgo.com "The best search engine for privacy").
+
+# URLs and Email Addresses
+
+<https://www.markdownguide.org>
+<fake@example.com>
+
+# Formatting Links
+
+I love supporting the **[EFF](https://eff.org)**.
+This is the *[Markdown Guide](https://www.markdownguide.org)*.
+See the section on [`code`](#code).
+
+
+# Images
+
+<!-- ![The San Juan Mountains are beautiful!](/assets/images/san-juan-mountains.jpg "San Juan Mountains") -->
+
+![The San Juan Mountains are beautiful!](imagformakrdown/san-juan-mountains.jpg "San Juan Mountains")
+
+# Linking Images
+
+[![An old rock in the desert](imagformakrdown/shiprock.jpg "Shiprock, New Mexico by Beau Rogers")](https://www.flickr.com/photos/beaurogers/31833779864/in/photolist-Qv3rFw-34mt9F-a9Cmfy-5Ha3Zi-9msKdv-o3hgjr-hWpUte-4WMsJ1-KUQ8N-deshUb-vssBD-6CQci6-8AFCiD-zsJWT-nNfsgB-dPDwZJ-bn9JGn-5HtSXY-6CUhAL-a4UTXB-ugPum-KUPSo-fBLNm-6CUmpy-4WMsc9-8a7D3T-83KJev-6CQ2bK-nNusHJ-a78rQH-nw3NvT-7aq2qf-8wwBso-3nNceh-ugSKP-4mh4kh-bbeeqH-a7biME-q3PtTf-brFpgb-cg38zw-bXMZc-nJPELD-f58Lmo-bXMYG-bz8AAi-bxNtNT-bXMYi-bXMY6-bXMYv)
+
+# Escaping Characters
+
+\* Without the backslash, this would be a bullet in an unordered list.
+
+        You can use a backslash to escape the following characters.
+        \ 	backslash
+        ` 	backtick (see also escaping backticks in code)
+        * 	asterisk
+        _ 	underscore
+        { } 	curly braces
+        [ ] 	brackets
+        < > 	angle brackets
+        ( ) 	parentheses
+        # 	pound sign
+        + 	plus sign
+        - 	minus sign (hyphen)
+        . 	dot
+        ! 	exclamation mark
+        | 	pipe (see also escaping pipe in tables)

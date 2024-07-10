@@ -4,7 +4,8 @@
 # running the flask command will set environment 
 # variables defined in the files .env and .flaskenv.
 
-FLASK_APP=5test # where to find your application in order to use it
+# FLASK_APP=2test # where to find your application in order to use it
+FLASK_APP=flaskr:create_app() # where to find your application in order to use it
 # FLASK_APP=src/hello
 #     Sets the current working directory to src then imports hello.
 # FLASK_APP=hello.web

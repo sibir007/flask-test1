@@ -1,4 +1,4 @@
-from crypt import methods
+# from crypt import methods
 from flask import Flask, redirect, url_for
 from flask import session, request
 
@@ -36,4 +36,21 @@ def login():
 def logout():
     session.pop('username', None)
     return redirect(url_for('index'))
+
+@app.route('/test')
+def test():
+    hed_list = []
+    for k, v in request.headers.items():
+        hed_list.append(f"<p>{k}: {v}\n</p>")
+    hed_str = ''.join(hed_list)
+    return hed_str
+
+@app.route('/me')
+def me():
+    return {
+        'username': 'dimon',
+        'email': 'sibiriakoff2006@yandex.ru'
+    }
+    
+    
         
