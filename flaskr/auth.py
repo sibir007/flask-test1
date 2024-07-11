@@ -38,7 +38,7 @@ def register():
                 return redirect(url_for('auth.login'))
             
         flash(', '.join(errors))
-    return render_template('auth/regiser.html')
+    return render_template('auth/register.html')
         
 @bp.route('/login', methods=['GET', 'POST'])
 def login():
@@ -49,7 +49,7 @@ def login():
         password = request.form.get('password', None)
         
         user = db.execute(
-            'SELECT * FROME user WHERE username = ?', (username,)
+            'SELECT * FROM user WHERE username = ?', (username,)
         ).fetchone()
         
         if not username:
