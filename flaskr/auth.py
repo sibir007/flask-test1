@@ -1,6 +1,6 @@
-from crypt import methods
+# from crypt import methods
 import functools
-from sqlite3 import IntegrityError 
+# from sqlite3 import IntegrityError 
 
 from flask import (
     Blueprint, flash, g, redirect, request, render_template, session, url_for
