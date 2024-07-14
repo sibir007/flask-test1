@@ -1,0 +1,63 @@
+DROP TABLE IF EXISTS user;
+DROP TABLE IF EXISTS market_user;
+DROP TABLE IF EXISTS market;
+DROP TABLE IF EXISTS tip;
+DROP TABLE IF EXISTS purchase;
+
+
+CREATE TABLE user (
+  id INTEGER PRIMARY KEY NOT NULL,
+  tg_nickname TEXT  NOT NULL,
+  tg_status TEXT  NOT NULL,
+  chat_name TEXT  NOT NULL,
+  status TEXT  NOT NULL,
+  whitelist BOOLEAN NOT NULL,
+  ban BOOLEAN NOT NULL,
+  cm_points_per_month INTEGER NOT NULL,
+  cm_points INTEGER NOT NULL,
+  class TEXT NOT NULL,
+  tips INTEGER NOT NULL,
+  tips_amount INTEGER NOT NULL,
+  activity INTEGER NOT NULL,
+  multiplier FLOAT(16) NOT NULL,
+  total_earned_cm INTEGER NOT NULL,
+  signal_access BOOLEAN NOT NULL,
+  created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE market_user (
+  uid VARCHAR PRIMARY KEY NOT NULL,
+  user_id INTEGER,
+  trading_amount FLOAT(16) NOT NULL,
+  spot_trading FLOAT(16) NOT NULL,
+  futures_trading FLOAT(16) NOT NULL,
+  assets FLOAT(16) NOT NULL,
+  created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (user_id) REFERENCES user (id)
+);
+
+
+CREATE TABLE tip (
+  tid INTEGER PRIMARY KEY AUTOINCREMENT,
+  sender_id INTEGER NOT NULL,
+  receiver_id INTEGER NOT NULL,
+  amount INTEGER NOT NULL,
+  receiver_tips_amount INTEGER NOT NULL,
+  sender_cmpoints_amount INTEGER NOT NULL,
+  sender_tips_amount INTEGER NOT NULL,
+  receiver_cmpoints_amount INTEGER NOT NULL,
+  created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (sender_id) REFERENCES user (id),
+  FOREIGN KEY (receiver_id) REFERENCES user (id)
+);
+
+
+CREATE TABLE purchase (
+  pid INTEGER PRIMARY KEY AUTOINCREMENT,
+  user_id INTEGER NOT NULL,
+  amount INTEGER NOT NULL,
+  total_price FLOAT(8) NOT NULL,
+  user_balance FLOAT(8) NOT NULL,
+  created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (user_id) REFERENCES user (id)
+);
