@@ -1,0 +1,21 @@
+# https://github.com/mfvanek/useful-sql-scripts/tree/master/running_pg_in_docker
+
+version: "3.9"
+services:
+  postgres:
+    container_name: postgres-admin-site
+    image: postgres:13.3
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER} # если не указан то по умолчанию postgres
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - ./docker_postgres:/docker-entrypoint-initdb.d 
+      - ./docker_postgres/init-database.sh:/docker-entrypoint-initdb.d/init-database.sh
+      - ./docker_postgres/postgresql/data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    env_file:
+      - ./.env
+volumes:
+  docker_postgres/postgresql/data: {}

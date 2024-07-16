@@ -1,0 +1,188 @@
+# https://github.com/mfvanek/useful-sql-scripts/tree/master/running_pg_in_docker
+
+version: "3.9"
+services:
+  postgres:
+    container_name: postgres-admin-site
+    image: postgres:13.3
+    restart: always
+    # тюнинг для улучшения производительности
+    command:
+      - "postgres"
+      - "-c"
+      - "max_connections=50"
+      - "-c"
+      - "shared_buffers=1GB"
+      - "-c"
+      - "effective_cache_size=4GB"
+      - "-c"
+      - "work_mem=16MB"
+      - "-c"
+      - "maintenance_work_mem=512MB"
+      - "-c"
+      - "random_page_cost=1.1"
+      - "-c"
+      - "temp_file_limit=10GB"
+      - "-c"
+      - "log_min_duration_statement=200ms"
+      - "-c"
+      - "idle_in_transaction_session_timeout=10s"
+      - "-c"
+      - "lock_timeout=1s"
+      - "-c"
+      - "statement_timeout=60s"
+      - "-c"
+      - "shared_preload_libraries=pg_stat_statements"
+      - "-c"
+      - "pg_stat_statements.max=10000"
+      - "-c"
+      - "pg_stat_statements.track=all"
+      # расположение конфиг файла
+      # - "config_file=/etc/postgresql.conf"
+    environment:
+      # POSTGRES_DB: ${POSTGRES_DB} дефолтная база, если не указывать то будет по имению юзера
+      POSTGRES_USER: ${POSTGRES_USER} # если не указан то по умолчанию postgres
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      # PGDATA: "/var/lib/postgresql/data" нужно разбираться для чего это
+    volumes:
+    # директива для добавления места где лежат инит sql
+    # и выполнеии инициализации бд, в данном случае скрипты 
+    # указаны в текущей дир "." перед ":"
+    # compose должен запускаться из дирректории где лежат файлы
+      # - ./:/docker-entrypoint-initdb.d 
+      - ./docker_postgres:/docker-entrypoint-initdb.d 
+    # ещё оди способ обозначения
+      # - ../2. Init Database:/docker-entrypoint-initdb.d
+      # закуск инициационного файла 
+      # - ./init-database.sh:/docker-entrypoint-initdb.d/init-database.sh
+      - ./docker_postgres/init-database.sh:/docker-entrypoint-initdb.d/init-database.sh
+    # дирректория в котой докер будет хранить данные бд
+      # - ./postgresql/data:/var/lib/postgresql/data
+      - ./postgres_data:/var/lib/postgresql/data
+    # волюм для конфиг
+      # - ./postgresql.conf:/etc/postgresql.conf:ro
+    ports:
+      - "5432:5432"
+    # Проверка состояния/работоспособности
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U habrpguser -d habrdb"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    # restart: unless-stopped
+    # ограничении ресурсов для контейнера с БД
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 4G
+    env_file:
+      - ./.env
+    # networks:
+    #   - postgres
+
+  #   # GUI - pgAdmin стартует на порту 5050: 
+  #   # перейдя на нужный адрес, можно будет настроить подключение к БД.
+  # pgadmin:
+  #   container_name: pgadmin_container
+  #   image: dpage/pgadmin4:7.2
+  #   environment:
+  #     PGADMIN_DEFAULT_EMAIL: "habrpguser@habr.com"
+  #     PGADMIN_DEFAULT_PASSWORD: "pgadminpwd4habr"
+  #     PGADMIN_CONFIG_SERVER_MODE: "False"
+  #   volumes:
+  #     - pgadmin-data:/var/lib/pgadmin
+  #   ports:
+  #     - "5050:80"
+  #   restart: unless-stopped
+  #   deploy:
+  #     resources:
+  #       limits:
+  #         cpus: '0.5'
+  #         memory: 1G
+  #   networks:
+  #     - postgres    
+# # Мониторинг - После запуска скрипта экспортер будет доступен на порту 9187 и отдавать метрики в формате Prometheus:
+#   postgres_exporter:
+#     container_name: exporter_container
+#     image: prometheuscommunity/postgres-exporter:v0.10.1
+#     environment:
+#       DATA_SOURCE_URI: "postgres:5432/habrdb?sslmode=disable"
+#       DATA_SOURCE_USER: "habrpguser"
+#       DATA_SOURCE_PASS: "pgpwd4habr"
+#       PG_EXPORTER_EXTEND_QUERY_PATH: "/etc/postgres_exporter/queries.yaml"
+#     volumes:
+#       - ./queries.yaml:/etc/postgres_exporter/queries.yaml:ro
+#     ports:
+#       - "9187:9187"
+#     restart: unless-stopped
+#     deploy:
+#       resources:
+#         limits:
+#           cpus: '0.2'
+#           memory: 500M
+#     networks:
+#       - postgres    
+volumes:
+  postgres_data:
+  # rental-data:
+  # postgresql/data:
+  # для GUI
+  # pgadmin-data:
+
+# для GUI
+# networks:
+#   postgres:
+#     driver: bridge
+
+
+# создание доплнительных дб
+
+# 1) Создаем папки
+# mkdir /opt/docker_postgres
+# mkdir /opt/docker_postgres/postgres_data
+# 2) Переходим в нее и создаем файлы
+# cd /opt/docker_postgres
+# touch init-database.sh
+# touch docker-compose.yml
+# 3) Редактируем docker-compose.yml
+# nano docker-compose.yml
+
+# version: "3.9"
+# services:
+#   postgres:
+#     image: postgres:latest
+#     restart: always
+#     container_name: postgres
+#     environment:
+#       POSTGRES_PASSWORD: "123pwd"
+#       MAX_CONNECTION: 200
+#       PGDATA: "/var/lib/postgresql/data/pgdata"
+#     ports:
+#       - "5432:5432"
+#     volumes:
+#       - type: bind
+#         source: /opt/docker_postgres/postgres_data
+#         target: /var/lib/postgresql/data/
+#     volumes:
+#         - ./init-database.sh:/docker-entrypoint-initdb.d/init-database.sh
+
+
+# 4) Редактируем init-database.sh
+
+# #!/bin/bash
+# set -e
+
+# psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" <<-EOSQL
+#     CREATE USER user WITH PASSWORD 'userpwd';
+#     CREATE DATABASE userdb;
+#     GRANT ALL PRIVILEGES ON DATABASE userdb TO user;
+# EOSQL
+
+
+# 5) И запускаем docker-compose up -d всё это время вы находитесь в директории в которой у вас лежит .yml d в примере это /opt/docker_postgres
+# PS. в файле init-database.sh добавляем нужное кол-во баз и пользователей для этих баз.
+# PSS /docker-entrypoint-initdb.d находится внутри контейнера и наша задача пробросить скрипт в нее (или sql запрос)
+# Ответ написан 01 нояб. 2023
+# Комментировать
