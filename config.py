@@ -42,7 +42,7 @@ class Config(object):
     SQLALCHEMY_BINDS = {
         'admin': config('DB_ADMIM'),
         'social_gamification': config('DB_SOCIAL_GAMIFICATION'),
-        'activity': config('DB_ACTIBITY')
+        'activity': config('DB_ACTIVITY')
     }
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     BCRYPT_LOG_ROUNDS = 13
@@ -53,6 +53,7 @@ class Config(object):
 class DevelopmentConfig(Config):
     DEVELOPMENT = True
     DEBUG = True
+    FLASK_DEBUG = 1
     WTF_CSRF_ENABLED = False
     DEBUG_TB_ENABLED = True
 
