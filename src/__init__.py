@@ -4,14 +4,13 @@ from flask import Flask, jsonify, request
 from decouple import config
 from flask_bcrypt import Bcrypt
 from flask_migrate import Migrate
-from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
+from .db import db
 
 
 
 from flaskr.auth import login
 
-db = SQLAlchemy()
 migrate = Migrate()
 login_manager = LoginManager()
 bcrypt = Bcrypt()
@@ -24,10 +23,13 @@ def create_app():
     migrate.init_app(app, db)
     login_manager.init_app(app)
 
-    from admin.controller import admin_blueprint, admin_blueprint    
+    from .admin.controller import admin_blueprint, admin_blueprint    
     app.register_blueprint(admin_blueprint)
     app.register_blueprint(admin_blueprint)
     
+    @app.route('/hello')
+    def hello():
+        return 'Hello, World'
     
     @app.errorhandler(404)
     @app.errorhandler(405)
