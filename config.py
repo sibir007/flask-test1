@@ -1,4 +1,5 @@
 from decouple import config
+import os
 
 
 class SQLALCHMY_CONFIG_KEYS():
@@ -33,23 +34,45 @@ class SQLALCHMY_CONFIG_KEYS():
 # A dictionary of keyword args to send to create_engine(). 
 # See also engine_options to SQLAlchemy.
     
+file_path = os.path.abspath(os.getcwd())
+
 
 class Config(object):
     DEBUG = False
     TESTING = False
     CSRF_ENABLED = True
     SECRET_KEY = config('SECRET_KEY', default='guess-me')
-    # SQLALCHEMY_DATABASE_URI = config('DB_ADMIM') используем SQLALCHEMY_BINDS 
+    SECURITY_PASSWORD_SALT = SECRET_KEY
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + file_path + '\\' +  config('DB_DEFAULT')
     SQLALCHEMY_BINDS = {
-        'admin': config('DB_ADMIM'),
-        'social_gamification': config('DB_SOCIAL_GAMIFICATION'),
-        'activity': config('DB_ACTIVITY')
+        'admin': 'sqlite:///' + file_path + '\\' + config('DB_ADMIM'),
+        'social_gamification': 'sqlite:///' + file_path + '\\' + config('DB_SOCIAL_GAMIFICATION'),
+        'activity': 'sqlite:///' + file_path + '\\' +  config('DB_ACTIVITY')
     }
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     BCRYPT_LOG_ROUNDS = 13
     WTF_CSRF_ENABLED = True
     DEBUG_TB_ENABLED = False
     DEBUG_TB_INTERCEPT_REDIRECTS = False
+
+# class Config(object):
+#     DEBUG = False
+#     TESTING = False
+#     CSRF_ENABLED = True
+#     SECRET_KEY = config('SECRET_KEY', default='guess-me')
+#     SQLALCHEMY_DATABASE_URI = config('DB_DEFAULT')
+#     SQLALCHEMY_BINDS = {
+#         'admin': 'sqlite:///' + file_path + '\\' + config('DB_ADMIM'),
+#         'social_gamification': config('DB_SOCIAL_GAMIFICATION'),
+#         'activity': config('DB_ACTIVITY')
+#     }
+#     SQLALCHEMY_TRACK_MODIFICATIONS = False
+#     BCRYPT_LOG_ROUNDS = 13
+#     WTF_CSRF_ENABLED = True
+#     DEBUG_TB_ENABLED = False
+#     DEBUG_TB_INTERCEPT_REDIRECTS = False
+    
+
     
 class DevelopmentConfig(Config):
     DEVELOPMENT = True

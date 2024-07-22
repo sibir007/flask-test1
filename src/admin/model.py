@@ -1,13 +1,13 @@
-from src.db import (
+from ..db import (
     db, intpk, timstamp, 
     utc_timstamp, required_name,
     PkCereatedAtUTCMixin, PkMixin
                     )
 
+
 import click
-from flask import Flask, current_app
 from typing import List, Literal, Optional
-from sqlalchemy import ForeignKey, String, Integer, Float, Table
+from sqlalchemy import Column, ForeignKey, PrimaryKeyConstraint, String, Integer, Float, Table
 from sqlalchemy.orm import (
     Mapped, mapped_column, relationship,
     validates
@@ -20,8 +20,24 @@ from flask_security import UserMixin, RoleMixin, hash_password, Security
 
 # Status = Literal['user', 'admin']
 
-class Admin(PkCereatedAtUTCMixin, UserMixin, db.Model):
-    __bind_key__ = 'admin'
+
+
+
+
+
+
+# class AdminRole(PkMixin, db.Model):
+#     """таблица асоциативности админ-роль"""
+    
+#     __bind_key__ = 'admin'
+#     __tablename__ = 'admin_role'
+    
+#     my_admin_id: Mapped[int]  = mapped_column(ForeignKey('my_admin.id'), primary_key=True)
+#     role_id: Mapped[int] = mapped_column(ForeignKey('role.id'), primary_key=True)
+
+class MyAdmin(PkCereatedAtUTCMixin, UserMixin, db.Model):
+    # __bind_key__ = 'admin'
+    # __tablename__ = 'my_admin'
     # __tablename__ = 'admin'
     
     
@@ -38,6 +54,13 @@ class Admin(PkCereatedAtUTCMixin, UserMixin, db.Model):
         doc='some doc'
     )
     
+    
+    roles: Mapped[List['Role']] = relationship(
+        secondary='admin_role', back_populates='my_admins'
+    )
+    
+    fs_uniquifier: Mapped[str] = mapped_column(unique=True)
+    
     @validates('password')                                                 
     def hashing_password(self, key, password):
         return hash_password(password)
@@ -45,24 +68,20 @@ class Admin(PkCereatedAtUTCMixin, UserMixin, db.Model):
     # status: Mapped[Status] = mapped_column(
     #     sqlalchemy.Enum("pending", "received", "completed", name="status_enum")
     # )
-    roles: Mapped[List['Role']] = relationship(
-        secondary='admin_role', back_populates='admins'
-    )
-    
     
     def __repr__(self) -> str:
-        return f"Admin(id={self.id}, username={self.adminname})"
+        return f"MyAdmin(id={self.id}, username={self.name})"
     
     
 class Telephone(PkMixin, db.Model):
-    __bind_key__ = 'admin'
+    # __bind_key__ = 'admin'
     # __tablename__ = 'address'
     
     telephone: Mapped[str]
 
-    admin_id: Mapped[int] = mapped_column(ForeignKey('admin.id'))
+    my_admin_id: Mapped[int] = mapped_column(ForeignKey('my_admin.id'))
 
-    admin: Mapped['Admin'] = relationship(back_populates='phones')
+    admin: Mapped['MyAdmin'] = relationship(back_populates='phones')
     
     def __repr__(self) -> str:
         return f"Telephone(id={self.id!r}, email_address={self.telephone!r})"
@@ -72,35 +91,25 @@ class Role(PkMixin, RoleMixin, db.Model):
     """таблица раолей админов для организации доступа
     к администрируемым сущьностям"""
     
-    __bind_key__ = 'admin'
+    # __bind_key__ = 'admin'
+    __tablename__ = 'role'
     
     role: Mapped[required_name]
     description: Mapped[Optional[str]]
     
-    admins: Mapped[List['Admin']] = relationship(
+    my_admins: Mapped[List['MyAdmin']] = relationship(
         secondary='admin_role', back_populates='roles'
     )
     
     
-
-class AdminRole(PkMixin, db.Model):
-    """таблица асоциативности админ-роль"""
-    
-    __bind_key__ = 'admin'
-    __tablename__ = 'admin_role'
-    
-    admin_id: Mapped[int]  = mapped_column(ForeignKey('admin.id'), primary_key=True)
-    role_id: Mapped[int] = mapped_column(ForeignKey('role.id'), primary_key=True)
+admin_role = Table(
+    'admin_role',
+    db.Model.metadata,
+    Column('role_id', ForeignKey('role.id'), primary_key=True),
+    Column('my_admin_id', ForeignKey('my_admin.id'), primary_key=True),
+    # bind_key='admin'
+)
 
 
-@click.command('create-root-admin')
-def create_root_admin():
-    """созндыние админа с root ролью, в случае наличия 
-    root - происходит замена пароля"""
-    with current_app.app_context():
-        pass
 
-
-def init_app(app: Flask):
-    app.cli.add_command(create_root_admin)
     

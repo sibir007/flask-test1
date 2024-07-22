@@ -1,17 +1,11 @@
-# import os
 from flask import Flask, jsonify, request
 from decouple import config
-from flask_migrate import Migrate
 from flask_login import LoginManager
-# from .db import db
 
 
 
-from flaskr.auth import login
 
-migrate = Migrate()
 login_manager = LoginManager()
-# bcrypt = Bcrypt()
 
 def create_app():
     app = Flask(__name__)
@@ -20,7 +14,15 @@ def create_app():
     from .db import db
     db.init_app(app)
     
-    migrate.init_app(app, db)
+    from .admin.view import security, myadmin, init_command
+    security.init_app(app=app)
+    myadmin.init_app(app=app)
+    init_command(app)
+    
+    
+    
+    
+    # migrate.init_app(app, db)
     # login_manager.init_app(app)
 
     # from .admin.controller import admin_blueprint, admin_blueprint    
