@@ -1,24 +1,36 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, render_template
 from decouple import config
 from flask_login import LoginManager
+from flask_migrate import Migrate
+import logging
+from .db import db
+from .admin.view import security, myadmin, init_command
 
+
+
+
+logging.basicConfig(level=logging.DEBUG, format=f'%(asctime)s %(levelname)s %(name)s %(threadName)s : %(message)s')
 
 
 
 login_manager = LoginManager()
+migrate = Migrate(db=db)
 
 def create_app():
     app = Flask(__name__)
     app.config.from_object(config('APP_SETTINGS'))
+    app.logger.debug('debug logget')
+    app.logger.error('error logger')
     
-    from .db import db
+    # for k, v in app.config.items():
+    #     print(f"{k}: {v}")
+    
     db.init_app(app)
+    migrate.init_app(app=app)
     
-    from .admin.view import security, myadmin, init_command
     security.init_app(app=app)
     myadmin.init_app(app=app)
     init_command(app)
-    
     
     
     
@@ -32,6 +44,10 @@ def create_app():
     @app.route('/hello')
     def hello():
         return 'Hello, World'
+    
+    @app.route('/')
+    def index():
+        return render_template('index.html')
     
     @app.errorhandler(404)
     @app.errorhandler(405)

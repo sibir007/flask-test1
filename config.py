@@ -37,40 +37,42 @@ class SQLALCHMY_CONFIG_KEYS():
 file_path = os.path.abspath(os.getcwd())
 
 
-class Config(object):
-    DEBUG = False
-    TESTING = False
-    CSRF_ENABLED = True
-    SECRET_KEY = config('SECRET_KEY', default='guess-me')
-    SECURITY_PASSWORD_SALT = SECRET_KEY
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + file_path + '\\' +  config('DB_DEFAULT')
-    SQLALCHEMY_BINDS = {
-        'admin': 'sqlite:///' + file_path + '\\' + config('DB_ADMIM'),
-        'social_gamification': 'sqlite:///' + file_path + '\\' + config('DB_SOCIAL_GAMIFICATION'),
-        'activity': 'sqlite:///' + file_path + '\\' +  config('DB_ACTIVITY')
-    }
-    SQLALCHEMY_TRACK_MODIFICATIONS = False
-    BCRYPT_LOG_ROUNDS = 13
-    WTF_CSRF_ENABLED = True
-    DEBUG_TB_ENABLED = False
-    DEBUG_TB_INTERCEPT_REDIRECTS = False
-
 # class Config(object):
 #     DEBUG = False
 #     TESTING = False
 #     CSRF_ENABLED = True
 #     SECRET_KEY = config('SECRET_KEY', default='guess-me')
-#     SQLALCHEMY_DATABASE_URI = config('DB_DEFAULT')
+#     SECURITY_PASSWORD_SALT = SECRET_KEY
+#     SQLALCHEMY_DATABASE_URI = 'sqlite:///' + file_path + '\\' +  config('DB_DEFAULT')
 #     SQLALCHEMY_BINDS = {
 #         'admin': 'sqlite:///' + file_path + '\\' + config('DB_ADMIM'),
-#         'social_gamification': config('DB_SOCIAL_GAMIFICATION'),
-#         'activity': config('DB_ACTIVITY')
+#         'social_gamification': 'sqlite:///' + file_path + '\\' + config('DB_SOCIAL_GAMIFICATION'),
+#         'activity': 'sqlite:///' + file_path + '\\' +  config('DB_ACTIVITY')
 #     }
 #     SQLALCHEMY_TRACK_MODIFICATIONS = False
 #     BCRYPT_LOG_ROUNDS = 13
 #     WTF_CSRF_ENABLED = True
 #     DEBUG_TB_ENABLED = False
 #     DEBUG_TB_INTERCEPT_REDIRECTS = False
+
+class Config(object):
+    DEBUG = False
+    TESTING = False
+    CSRF_ENABLED = True
+    SECRET_KEY = config('SECRET_KEY', default='guess-me')
+    SECURITY_PASSWORD_SALT = SECRET_KEY
+    # SQLALCHEMY_DATABASE_URI = config('DB_DEFAULT')
+    SQLALCHEMY_DATABASE_URI = config('DB_ADMIM')
+    SQLALCHEMY_BINDS = {
+        # 'admin': config('DB_ADMIM'),
+        'social_gamification': config('DB_SOCIAL_GAMIFICATION'),
+        'activity': config('DB_ACTIVITY')
+    }
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+    BCRYPT_LOG_ROUNDS = 13
+    WTF_CSRF_ENABLED = True
+    DEBUG_TB_ENABLED = False
+    DEBUG_TB_INTERCEPT_REDIRECTS = False
     
 
     

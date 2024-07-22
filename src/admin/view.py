@@ -69,8 +69,8 @@ def build_test_db():
     with current_app.app_context():
         db.drop_all()
         db.create_all()
-        admin_role = my_admin_datastore.create_role(role='admin')
-        root_admin_role = my_admin_datastore.create_role(role='root_admin')
+        admin_role = my_admin_datastore.create_role(name='admin')
+        root_admin_role = my_admin_datastore.create_role(name='root_admin')
         db.session.add(admin_role)
         db.session.add(root_admin_role)
         db.session.commit()
@@ -93,7 +93,7 @@ def build_test_db():
                 name = name, password=temp_pass,
                 email = tmp_email,
                 phones = [Telephone(telephone=temp_tel1), Telephone(telephone=temp_tel2)],
-                reles = [admin_role,]
+                roles = [admin_role,]
             )
         
         db.session.commit()

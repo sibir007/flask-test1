@@ -43,9 +43,17 @@ class PkMixin:
 
 class CereatedAtUTCMixin:
     created_at: Mapped[utc_timstamp]    
-    
+
+class CereatedAtMixin:
+    created_at: Mapped[timstamp]    
+
+
 class PkCereatedAtUTCMixin(PkMixin, CereatedAtUTCMixin):
     pass
+
+class PkCereatedAtMixin(PkMixin, CereatedAtMixin):
+    pass
+
 
 
 class Base(DeclarativeBase):

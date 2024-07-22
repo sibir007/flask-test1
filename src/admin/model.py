@@ -1,13 +1,14 @@
 from ..db import (
     db, intpk, timstamp, 
     utc_timstamp, required_name,
-    PkCereatedAtUTCMixin, PkMixin
+    PkCereatedAtUTCMixin, PkMixin,
+    PkCereatedAtMixin
                     )
 
 
 import click
 from typing import List, Literal, Optional
-from sqlalchemy import Column, ForeignKey, PrimaryKeyConstraint, String, Integer, Float, Table
+from sqlalchemy import Column, ForeignKey
 from sqlalchemy.orm import (
     Mapped, mapped_column, relationship,
     validates
@@ -35,7 +36,7 @@ from flask_security import UserMixin, RoleMixin, hash_password, Security
 #     my_admin_id: Mapped[int]  = mapped_column(ForeignKey('my_admin.id'), primary_key=True)
 #     role_id: Mapped[int] = mapped_column(ForeignKey('role.id'), primary_key=True)
 
-class MyAdmin(PkCereatedAtUTCMixin, UserMixin, db.Model):
+class MyAdmin(PkCereatedAtMixin, UserMixin, db.Model):
     # __bind_key__ = 'admin'
     # __tablename__ = 'my_admin'
     # __tablename__ = 'admin'
@@ -53,7 +54,7 @@ class MyAdmin(PkCereatedAtUTCMixin, UserMixin, db.Model):
         cascade="all, delete-orphan",
         doc='some doc'
     )
-    
+    active: Mapped[Optional[bool]]
     
     roles: Mapped[List['Role']] = relationship(
         secondary='admin_role', back_populates='my_admins'
@@ -94,7 +95,7 @@ class Role(PkMixin, RoleMixin, db.Model):
     # __bind_key__ = 'admin'
     __tablename__ = 'role'
     
-    role: Mapped[required_name]
+    name: Mapped[required_name]
     description: Mapped[Optional[str]]
     
     my_admins: Mapped[List['MyAdmin']] = relationship(
@@ -102,7 +103,7 @@ class Role(PkMixin, RoleMixin, db.Model):
     )
     
     
-admin_role = Table(
+admin_role = db.Table(
     'admin_role',
     db.Model.metadata,
     Column('role_id', ForeignKey('role.id'), primary_key=True),
