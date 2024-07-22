@@ -39,8 +39,9 @@ class Config(object):
     TESTING = False
     CSRF_ENABLED = True
     SECRET_KEY = config('SECRET_KEY', default='guess-me')
-    SQLALCHEMY_DATABASE_URI = config('DB_ADMIM')
+    # SQLALCHEMY_DATABASE_URI = config('DB_ADMIM') используем SQLALCHEMY_BINDS 
     SQLALCHEMY_BINDS = {
+        'admin': config('DB_ADMIM'),
         'social_gamification': config('DB_SOCIAL_GAMIFICATION'),
         'activity': config('DB_ACTIVITY')
     }
