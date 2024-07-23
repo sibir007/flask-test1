@@ -42,7 +42,7 @@ class MyAdmin(PkCereatedAtMixin, UserMixin, db.Model):
     # __tablename__ = 'admin'
     
     
-    name: Mapped[required_name] = mapped_column(unique=True)
+    # name: Mapped[required_name] = mapped_column(unique=True)
     # full_name: Mapped[Optional[str]]
     password: Mapped[str]
     # password: Mapped[str] = mapped_column(d=lambda pw: bcrypt.generate_password_hash(pw))

@@ -19,6 +19,8 @@ my_admin_datastore = SQLAlchemyUserDatastore(db=db, user_model=MyAdmin, role_mod
 security = Security(datastore=my_admin_datastore)
 
 class MyAdminModelView(sqla.ModelView):
+    column_list = ('id', 'email', 'phones', 'roles')
+    column_display_all_relations = True
     
     def is_accessible(self):
         return (current_user.is_active and
@@ -41,7 +43,7 @@ myadmin = flask_admin.Admin(
 )
 
 myadmin.add_view(MyAdminModelView(MyAdmin, db.session, category='myadmin'))
-myadmin.add_view(MyAdminModelView(Role, db.session, category='myadmin'))
+# myadmin.add_view(MyAdminModelView(Role, db.session, category='myadmin'))
 
 @security.context_processor
 def security_context_processor():
@@ -76,7 +78,8 @@ def build_test_db():
         db.session.commit()
 
         test_root_admin = my_admin_datastore.create_user(
-            name = 'root', password='root',
+            password='root',
+            # name = 'root', password='root',
             email = 'sibiriakoff2006@yandex.ru',
             phones = [Telephone(telephone='88123334455'), Telephone(telephone='89112772308')],
             roles = [admin_role, root_admin_role]
@@ -90,7 +93,8 @@ def build_test_db():
             temp_tel2 = ''.join(random.choice(string.digits) for i in range(9)) 
             temp_pass = ''.join(random.choice(string.ascii_lowercase + string.digits) for i in range(5)) 
             my_admin_datastore.create_user(
-                name = name, password=temp_pass,
+                password=temp_pass,
+                # name = name, password=temp_pass,
                 email = tmp_email,
                 phones = [Telephone(telephone=temp_tel1), Telephone(telephone=temp_tel2)],
                 roles = [admin_role,]
