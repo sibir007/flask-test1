@@ -5,7 +5,7 @@ from flask_migrate import Migrate
 import logging
 from .db import db
 from .admin.view import security, myadmin, init_command
-
+# from flask_debugtoolbar import DebugToolbarExtension
 
 
 
@@ -13,6 +13,7 @@ logging.basicConfig(level=logging.DEBUG, format=f'%(asctime)s %(levelname)s %(na
 
 
 
+# toolbar = DebugToolbarExtension()
 login_manager = LoginManager()
 migrate = Migrate(db=db)
 
@@ -21,10 +22,10 @@ def create_app():
     app.config.from_object(config('APP_SETTINGS'))
     app.logger.debug('debug logget')
     app.logger.error('error logger')
-    
-    # for k, v in app.config.items():
-    #     print(f"{k}: {v}")
-    
+    # toolbar.init_app(app)
+    for k, v in app.config.items():
+        print(f"{k}: {v}")
+    # app.debug = True
     db.init_app(app)
     migrate.init_app(app=app)
     

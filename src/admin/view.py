@@ -14,13 +14,38 @@ import click
 from flask import Flask, current_app
 import random
 import string
+from flask_admin import BaseView, expose
+
 
 my_admin_datastore = SQLAlchemyUserDatastore(db=db, user_model=MyAdmin, role_model=Role)
 security = Security(datastore=my_admin_datastore)
 
+
+class AnalyticsView(BaseView):
+    @expose('/')
+    def index(self):
+        return self.render('analytics_index.html')
+
 class MyAdminModelView(sqla.ModelView):
     column_list = ('id', 'email', 'phones', 'roles')
     column_display_all_relations = True
+    create_modal = True
+    edit_modal = True
+    can_view_details = True
+    # column_searchable_list = ['name', 'email']
+    # column_filters = ['country']
+    # column_editable_list = ['name', 'last_name']
+    # form_choices = {
+    #     'title': [
+    #         ('MR', 'Mr'),
+    #         ('MRS', 'Mrs'),
+    #         ('MS', 'Ms'),
+    #         ('DR', 'Dr'),
+    #         ('PROF', 'Prof.')
+    #     ]
+    # }
+    # form_excluded_columns = ['last_name', 'email']
+    # can_export = True
     
     def is_accessible(self):
         return (current_user.is_active and
@@ -38,12 +63,16 @@ class MyAdminModelView(sqla.ModelView):
                 return redirect(url_for('security.login', next=request.url))
 
 myadmin = flask_admin.Admin(
-    name='MyAdmin',
+    name='CRYPTO MENTORS ADMIN',
     template_mode='bootstrap4'
 )
 
+
+
 myadmin.add_view(MyAdminModelView(MyAdmin, db.session, category='myadmin'))
 # myadmin.add_view(MyAdminModelView(Role, db.session, category='myadmin'))
+myadmin.add_view(AnalyticsView(name='Analytics', endpoint='analytics'))
+
 
 @security.context_processor
 def security_context_processor():

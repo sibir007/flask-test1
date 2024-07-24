@@ -37,24 +37,63 @@ class SQLALCHMY_CONFIG_KEYS():
 file_path = os.path.abspath(os.getcwd()) + '\\db_data'
 
 
+# class Config(object):
+#     DEBUG = False
+#     TESTING = False
+#     CSRF_ENABLED = True
+#     SECRET_KEY = config('SECRET_KEY', default='guess-me')
+#     # SECURITY_PASSWORD_SALT = SECRET_KEY
+#     SQLALCHEMY_DATABASE_URI = 'sqlite:///' + file_path + '\\' +  config('DB_DEFAULT')
+#     SQLALCHEMY_BINDS = {
+#         'admin': 'sqlite:///' + file_path + '\\' + config('DB_ADMIM'),
+#         'social_gamification': 'sqlite:///' + file_path + '\\' + config('DB_SOCIAL_GAMIFICATION'),
+#         'activity': 'sqlite:///' + file_path + '\\' +  config('DB_ACTIVITY')
+#     }
+#     SQLALCHEMY_TRACK_MODIFICATIONS = False
+#     BCRYPT_LOG_ROUNDS = 13
+#     WTF_CSRF_ENABLED = True
+#     DEBUG_TB_ENABLED = False
+#     DEBUG_TB_INTERCEPT_REDIRECTS = False
+        
+#         # Flask-Security config
+#     SECURITY_URL_PREFIX = "/admin"
+#     SECURITY_PASSWORD_HASH = "pbkdf2_sha512"
+#     SECURITY_PASSWORD_SALT = "ATGUOHAELKiubahiughaerGOJAEGj"
+
+#     # Flask-Security URLs, overridden because they don't put a / at the end
+#     SECURITY_LOGIN_URL = "/login/"
+#     SECURITY_LOGOUT_URL = "/logout/"
+#     SECURITY_REGISTER_URL = "/register/"
+
+#     SECURITY_POST_LOGIN_VIEW = "/admin/"
+#     SECURITY_POST_LOGOUT_VIEW = "/admin/"
+#     SECURITY_POST_REGISTER_VIEW = "/admin/"
+
+#     # Flask-Security features
+#     SECURITY_REGISTERABLE = True
+#     SECURITY_SEND_REGISTER_EMAIL = False
+#     SQLALCHEMY_TRACK_MODIFICATIONS = False
+
 class Config(object):
     DEBUG = False
     TESTING = False
     CSRF_ENABLED = True
     SECRET_KEY = config('SECRET_KEY', default='guess-me')
-    # SECURITY_PASSWORD_SALT = SECRET_KEY
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + file_path + '\\' +  config('DB_DEFAULT')
+    SECURITY_PASSWORD_SALT = SECRET_KEY
+    # SQLALCHEMY_DATABASE_URI = config('DB_DEFAULT')
+    SQLALCHEMY_DATABASE_URI = config('DB_ADMIM')
     SQLALCHEMY_BINDS = {
-        'admin': 'sqlite:///' + file_path + '\\' + config('DB_ADMIM'),
-        'social_gamification': 'sqlite:///' + file_path + '\\' + config('DB_SOCIAL_GAMIFICATION'),
-        'activity': 'sqlite:///' + file_path + '\\' +  config('DB_ACTIVITY')
+        # 'admin': config('DB_ADMIM'),
+        'social_gamification': config('DB_SOCIAL_GAMIFICATION'),
+        'activity': config('DB_ACTIVITY')
     }
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     BCRYPT_LOG_ROUNDS = 13
     WTF_CSRF_ENABLED = True
     DEBUG_TB_ENABLED = False
     DEBUG_TB_INTERCEPT_REDIRECTS = False
-        
+    
+    
         # Flask-Security config
     SECURITY_URL_PREFIX = "/admin"
     SECURITY_PASSWORD_HASH = "pbkdf2_sha512"
@@ -73,26 +112,10 @@ class Config(object):
     SECURITY_REGISTERABLE = True
     SECURITY_SEND_REGISTER_EMAIL = False
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-
-# class Config(object):
-#     DEBUG = False
-#     TESTING = False
-#     CSRF_ENABLED = True
-#     SECRET_KEY = config('SECRET_KEY', default='guess-me')
-#     SECURITY_PASSWORD_SALT = SECRET_KEY
-#     # SQLALCHEMY_DATABASE_URI = config('DB_DEFAULT')
-#     SQLALCHEMY_DATABASE_URI = config('DB_ADMIM')
-#     SQLALCHEMY_BINDS = {
-#         # 'admin': config('DB_ADMIM'),
-#         'social_gamification': config('DB_SOCIAL_GAMIFICATION'),
-#         'activity': config('DB_ACTIVITY')
-#     }
-#     SQLALCHEMY_TRACK_MODIFICATIONS = False
-#     BCRYPT_LOG_ROUNDS = 13
-#     WTF_CSRF_ENABLED = True
-#     DEBUG_TB_ENABLED = False
-#     DEBUG_TB_INTERCEPT_REDIRECTS = False
     
+    
+    # Flask-Admin
+    FLASK_ADMIN_FLUID_LAYOUT = True
 
     
 class DevelopmentConfig(Config):
