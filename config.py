@@ -80,13 +80,24 @@ class Config(object):
     CSRF_ENABLED = True
     SECRET_KEY = config('SECRET_KEY', default='guess-me')
     SECURITY_PASSWORD_SALT = SECRET_KEY
+    
+    # конфиг для виндовс на работе
     # SQLALCHEMY_DATABASE_URI = config('DB_DEFAULT')
-    SQLALCHEMY_DATABASE_URI = config('DB_ADMIM')
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + file_path + '\\' + config('DB_ADMIM')
     SQLALCHEMY_BINDS = {
-        # 'admin': config('DB_ADMIM'),
-        'social_gamification': config('DB_SOCIAL_GAMIFICATION'),
-        'activity': config('DB_ACTIVITY')
+    # 'admin': 'sqlite:///' + file_path + '\\' + config('DB_ADMIM'),
+    'social_gamification': 'sqlite:///' + file_path + '\\' + config('DB_SOCIAL_GAMIFICATION'),
+    'activity': 'sqlite:///' + file_path + '\\' +  config('DB_ACTIVITY')
     }
+    
+    # конфиг для убунту дома
+    # SQLALCHEMY_DATABASE_URI = config('DB_ADMIM')
+    # SQLALCHEMY_BINDS = {
+    #     # 'admin': config('DB_ADMIM'),
+    #     'social_gamification': config('DB_SOCIAL_GAMIFICATION'),
+    #     'activity': config('DB_ACTIVITY')
+    # }
+    
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     BCRYPT_LOG_ROUNDS = 13
     WTF_CSRF_ENABLED = True
@@ -102,15 +113,16 @@ class Config(object):
     # Flask-Security URLs, overridden because they don't put a / at the end
     SECURITY_LOGIN_URL = "/login/"
     SECURITY_LOGOUT_URL = "/logout/"
-    SECURITY_REGISTER_URL = "/register/"
+    # регистрацию убираем, возможна только через интерфейс админа с роот правами
+    # SECURITY_REGISTER_URL = "/register/"
 
     SECURITY_POST_LOGIN_VIEW = "/admin/"
     SECURITY_POST_LOGOUT_VIEW = "/admin/"
-    SECURITY_POST_REGISTER_VIEW = "/admin/"
+    # SECURITY_POST_REGISTER_VIEW = "/admin/"
 
     # Flask-Security features
-    SECURITY_REGISTERABLE = True
-    SECURITY_SEND_REGISTER_EMAIL = False
+    # SECURITY_REGISTERABLE = True
+    # SECURITY_SEND_REGISTER_EMAIL = False
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     
     

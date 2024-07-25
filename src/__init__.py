@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request, render_template
+from flask import Flask, jsonify, redirect, request, render_template, url_for
 from decouple import config
 from flask_login import LoginManager
 from flask_migrate import Migrate
@@ -42,13 +42,13 @@ def create_app():
     # app.register_blueprint(admin_blueprint)
     # app.register_blueprint(admin_blueprint)
     
-    @app.route('/hello')
-    def hello():
-        return 'Hello, World'
+    # @app.route('/hello')
+    # def hello():
+    #     return 'Hello, World'
     
     @app.route('/')
     def index():
-        return render_template('index.html')
+        return redirect(url_for('admin.index'))
     
     @app.errorhandler(404)
     @app.errorhandler(405)

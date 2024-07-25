@@ -7,3 +7,5 @@ Flask testing
 <https://pythonhosted.org/Flask-Security/>
 
 <https://pythonhosted.org/Flask-Principal/>
+
+<https://github.com/mapio/Flask-Admin-Inline-Models-And-Related-Fields>

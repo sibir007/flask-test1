@@ -71,7 +71,10 @@ class MyAdmin(PkCereatedAtMixin, UserMixin, db.Model):
     # )
     
     def __repr__(self) -> str:
-        return f"MyAdmin(id={self.id}, username={self.name})"
+        return f"MyAdmin(id={self.id}, email={self.email})"
+    
+    def __str__(self) -> str:
+        return self.email
     
     
 class Telephone(PkMixin, db.Model):
@@ -85,7 +88,10 @@ class Telephone(PkMixin, db.Model):
     admin: Mapped['MyAdmin'] = relationship(back_populates='phones')
     
     def __repr__(self) -> str:
-        return f"Telephone(id={self.id!r}, email_address={self.telephone!r})"
+        return f"Telephone(id={self.id!r}, telephone={self.telephone!r})"
+    
+    def __str__(self) -> str:
+        return self.telephone
 
     
 class Role(PkMixin, RoleMixin, db.Model):
@@ -98,10 +104,15 @@ class Role(PkMixin, RoleMixin, db.Model):
     name: Mapped[required_name]
     description: Mapped[Optional[str]]
     
-    my_admins: Mapped[List['MyAdmin']] = relationship(
+    my_admins: Mapped[Optional[List['MyAdmin']]] = relationship(
         secondary='admin_role', back_populates='roles'
     )
     
+    def __repr__(self) -> required_name:
+        return f"Role(name={self.name}, description={self.description})"
+
+    def __str__(self) -> str:
+        return self.name
     
 admin_role = db.Table(
     'admin_role',

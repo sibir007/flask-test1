@@ -9,12 +9,13 @@ from flask_admin.contrib import sqla
 from ..db import db
 from .model import MyAdmin, Role, Telephone
 from flask_security.core import Security, current_user
+from flask_security import login_required
 from flask_admin import helpers as admin_helpers
 import click
 from flask import Flask, current_app
 import random
 import string
-from flask_admin import BaseView, expose
+from flask_admin import BaseView, expose, AdminIndexView
 
 
 my_admin_datastore = SQLAlchemyUserDatastore(db=db, user_model=MyAdmin, role_model=Role)
@@ -27,11 +28,18 @@ class AnalyticsView(BaseView):
         return self.render('analytics_index.html')
 
 class MyAdminModelView(sqla.ModelView):
-    column_list = ('id', 'email', 'phones', 'roles')
+    # column_editable_list = ('email', 'phones', 'roles')
+    column_list = ('email', 'phones', 'roles')
+    form_columns = ('email', 'phones', 'roles')
+    details_list = ('email', 'phones', 'roles')
+    
     column_display_all_relations = True
     create_modal = True
     edit_modal = True
     can_view_details = True
+    inline_models = (Telephone, )
+    
+    # column_hide_backref = 
     # column_searchable_list = ['name', 'email']
     # column_filters = ['country']
     # column_editable_list = ['name', 'last_name']
@@ -62,16 +70,33 @@ class MyAdminModelView(sqla.ModelView):
                 # login
                 return redirect(url_for('security.login', next=request.url))
 
+class RoleModelView(sqla.ModelView):
+    column_list = ('name', 'description')
+    form_columns = ('name', 'description')
+    details_list = ('name', 'description')
+    
+    create_modal = True
+    edit_modal = True
+    
+class MyAdminIndexView(AdminIndexView):
+    @expose('/')
+    @login_required
+    def index(self):
+        return self.render('admin/index.html')
+
 myadmin = flask_admin.Admin(
     name='CRYPTO MENTORS ADMIN',
-    template_mode='bootstrap4'
+    template_mode='bootstrap4',
+    index_view=MyAdminIndexView()
 )
 
 
 
-myadmin.add_view(MyAdminModelView(MyAdmin, db.session, category='myadmin'))
+myadmin.add_view(MyAdminModelView(MyAdmin, db.session, name='admin', category='ADMIN'))
+myadmin.add_view(sqla.ModelView(Telephone, db.session,  name='telephone', category='ADMIN'))
+myadmin.add_view(RoleModelView(Role, db.session, name='role', category='ADMIN'))
 # myadmin.add_view(MyAdminModelView(Role, db.session, category='myadmin'))
-myadmin.add_view(AnalyticsView(name='Analytics', endpoint='analytics'))
+myadmin.add_view(AnalyticsView(name='ANALYTICS', endpoint='analytics'))
 
 
 @security.context_processor

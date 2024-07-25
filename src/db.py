@@ -14,7 +14,7 @@ from flaskr.db import init_app
 intpk = Annotated[int, mapped_column(primary_key=True)]
 timstamp = Annotated[
     datetime.datetime,
-    mapped_column(nullable=False, server_default=func.current_timestamp())
+    mapped_column(nullable=False, server_default=func.current_timestamp(), init=False)
 ]
 
 utc_timstamp = Annotated[
