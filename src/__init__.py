@@ -1,10 +1,8 @@
 from flask import Flask, jsonify, redirect, request, render_template, url_for
 from decouple import config
-from flask_login import LoginManager
+# from flask_login import LoginManager
 from flask_migrate import Migrate
 import logging
-from .db import db
-from .admin.view import security, myadmin, init_command
 # from flask_debugtoolbar import DebugToolbarExtension
 
 
@@ -14,8 +12,8 @@ logging.basicConfig(level=logging.DEBUG, format=f'%(asctime)s %(levelname)s %(na
 
 
 # toolbar = DebugToolbarExtension()
-login_manager = LoginManager()
-migrate = Migrate(db=db)
+# login_manager = LoginManager()
+migrate = Migrate()
 
 def create_app():
     app = Flask(__name__)
@@ -26,25 +24,19 @@ def create_app():
     for k, v in app.config.items():
         print(f"{k}: {v}")
     # app.debug = True
-    db.init_app(app)
+    
     migrate.init_app(app=app)
     
+    from .db import db
+    db.init_app(app)
+
+    from .admin_init import security, myadmin
     security.init_app(app=app)
     myadmin.init_app(app=app)
+        
+    from .manage import init_command
     init_command(app)
     
-    
-    
-    # migrate.init_app(app, db)
-    # login_manager.init_app(app)
-
-    # from .admin.controller import admin_blueprint, admin_blueprint    
-    # app.register_blueprint(admin_blueprint)
-    # app.register_blueprint(admin_blueprint)
-    
-    # @app.route('/hello')
-    # def hello():
-    #     return 'Hello, World'
     
     @app.route('/')
     def index():
