@@ -29,9 +29,9 @@ class MyAdmin(PkCereatedAtMixin, UserMixin, db.Model):
         secondary='admin_role', back_populates='my_admins'
     )
     fs_uniquifier: Mapped[str] = mapped_column(unique=True)
-    @validates('password')                                                 
-    def hashing_password(self, key, password):
-        return hash_password(password)
+    # @validates('password')                                                 
+    # def hashing_password(self, key, password):
+    #     return hash_password(password)
     # status: Mapped[Status]
     # status: Mapped[Status] = mapped_column(
     #     sqlalchemy.Enum("pending", "received", "completed", name="status_enum")

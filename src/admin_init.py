@@ -25,6 +25,9 @@ myadmin = Admin(
 )
 
 
+
+
+
 @security.context_processor
 def security_context_processor():
     return dict(
@@ -33,6 +36,46 @@ def security_context_processor():
         h=admin_helpers,
         get_url=url_for
     )
+    
+    
+from flask_security.proxies import _security
+from flask_security.decorators import unauth_csrf, auth_required
+from flask_security.forms import build_form_from_request
+from flask_security.utils import view_commit
+from flask_security.registerable import register_user
+from flask.ctx import after_this_request
+from flask.typing import ResponseValue
+from flask_admin.contrib import sqla
+from flask import Blueprint, redirect, render_template, request
+
+
+register_bp = Blueprint('register', __name__, url_prefix='/admin')
+
+# ПЕРЕОБРЕДЕЛИНЕ РЕГИСТРАЦИИ Flask-Security !!!!!!!!!
+@register_bp.route('/register', methods=['GET', 'POST'])
+@unauth_csrf()
+@auth_required()
+def register() -> ResponseValue:
+    form_name = "register_form"
+    form = build_form_from_request(form_name)
+
+    if form.validate_on_submit():
+        after_this_request(view_commit)
+        register_user(form)
+
+        return redirect('/admin/myadmin')
+
+    return render_template('security/register_user.html', 
+                           register_user_form=form, 
+                           admin_base_template=myadmin.base_template,
+                            admin_view=myadmin.index_view,
+                            h=admin_helpers,
+                            get_url=url_for)
+    
+
+
+
+
 
 
 from .admin.views import (
@@ -45,7 +88,7 @@ from .social_gamification.views import (
 )
 
 myadmin.add_views(
-    MyAdminListView, MyAdminTelephoneView,
+    MyAdminListView, # MyAdminTelephoneView,
     MyAdminRoleView, MyAdminAnalyticsView,
     SGUserView, SGMarketUserView,
     SGPurchaseView, SGTipView

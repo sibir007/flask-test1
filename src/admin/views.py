@@ -1,10 +1,12 @@
 
-from flask_admin.contrib import sqla
 
 from .model import MyAdmin, Role, Telephone
 from ..db import db
 from flask_admin import BaseView, expose
 from ..views_base import MyViewsBase, MyModelsMixin
+
+
+
 
 class AnalyticsView(MyModelsMixin, BaseView):
     """для примера возможного использования"""
@@ -27,7 +29,8 @@ class MyAdminModelView(MyAdminBase):
     column_list = ('email', 'phones', 'roles')
     form_columns = ('email', 'phones', 'roles')
     # column_details_list = ('email', 'phones', 'roles')
-    
+    can_create = False
+
     inline_models = (Telephone, )
 
 class RoleModelView(MyAdminBase):

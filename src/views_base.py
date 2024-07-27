@@ -32,12 +32,13 @@ class MyViewsBase(MyModelsMixin, sqla.ModelView):
     базовый класс для видов всех моделей,
     в субклассах переопределить _admin_role_ из MyModelsMixin 
     """
-
-    column_display_all_relations = True
-    create_modal = True
     edit_modal = True
+    create_modal = True
     details_modal = True
+
     can_view_details = True
+    
+    column_display_all_relations = True
     
     # column_hide_backref = 
     # column_searchable_list = ['name', 'email']

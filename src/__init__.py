@@ -18,7 +18,7 @@ migrate = Migrate()
 def create_app():
     app = Flask(__name__)
     app.config.from_object(config('APP_SETTINGS'))
-    app.logger.debug('debug logget')
+    app.logger.debug(f"APP_SETTINGS: {config('APP_SETTINGS')}")
     app.logger.error('error logger')
     # toolbar.init_app(app)
     for k, v in app.config.items():
@@ -30,12 +30,14 @@ def create_app():
     from .db import db
     db.init_app(app)
 
-    from .admin_init import security, myadmin
+    from .admin_init import security, myadmin, register_bp
     security.init_app(app=app)
     myadmin.init_app(app=app)
+    app.register_blueprint(register_bp)
         
     from .manage import init_command
     init_command(app)
+    
     
     
     @app.route('/')
