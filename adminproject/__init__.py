@@ -1,14 +1,17 @@
 from flask import Flask, jsonify, redirect, request, render_template, url_for
-from decouple import config
+from decouple import Config, RepositoryEnv
 # from flask_login import LoginManager
 from flask_migrate import Migrate
 import logging
 # from flask_debugtoolbar import DebugToolbarExtension
-
+import os
 
 
 logging.basicConfig(level=logging.DEBUG, format=f'%(asctime)s %(levelname)s %(name)s %(threadName)s : %(message)s')
-
+file_path_lin2 = os.path.abspath(os.getcwd())
+print(f"-------------{file_path_lin2}------------------")
+DOTENV_FILE = './.env'
+config =  Config(RepositoryEnv(DOTENV_FILE))
 
 
 # toolbar = DebugToolbarExtension()
@@ -53,3 +56,7 @@ def create_app():
             return ex
     
     return app
+
+if __name__ == '__main__':
+    app = create_app()
+    app.run()

@@ -110,11 +110,11 @@ class DevelopmentConfigUbuPg(DevelopmentConfig):
 
 class DevelopmentConfigUbuSL(DevelopmentConfig):
     # # конфиг для убунту дома
-    SQLALCHEMY_DATABASE_URI = 'sqlite://' + file_path_lin2 + '/' +  config('DB_ADMIM_NAME')
+    SQLALCHEMY_DATABASE_URI = config('DB_ADMIM_SL')
     SQLALCHEMY_BINDS = {
         # 'admin': config('DB_ADMIM'),
-        'social_gamification': 'sqlite://' + file_path_lin2  + '/' + config('DB_SOCIAL_GAMIFICATION_NAME'),
-        'activity': 'sqlite://' + file_path_lin2 + '/' + config('DB_ACTIVITY_NAME')
+        'social_gamification': config('DB_SOCIAL_GAMIFICATION_SL'),
+        'activity': config('DB_ACTIVITY_SL')
     }
 
 
