@@ -34,7 +34,8 @@ class SQLALCHMY_CONFIG_KEYS():
 # A dictionary of keyword args to send to create_engine(). 
 # See also engine_options to SQLAlchemy.
     
-file_path = os.path.abspath(os.getcwd()) + '\\db_data'
+file_path_win = os.path.abspath(os.getcwd()) + '\\db_data'
+file_path_lin = os.path.abspath(os.getcwd()) + 'db_data/'
 
 
 
@@ -89,15 +90,15 @@ class DevelopmentConfig(Config):
 class DevelopmentConfigWin(DevelopmentConfig):
     # конфиг для виндовс на работе
     # SQLALCHEMY_DATABASE_URI = config('DB_DEFAULT')
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + file_path + '\\' + config('DB_ADMIM')
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + file_path_win + '\\' + config('DB_ADMIM_NAME')
     SQLALCHEMY_BINDS = {
     # 'admin': 'sqlite:///' + file_path + '\\' + config('DB_ADMIM'),
-    'social_gamification': 'sqlite:///' + file_path + '\\' + config('DB_SOCIAL_GAMIFICATION'),
-    'activity': 'sqlite:///' + file_path + '\\' +  config('DB_ACTIVITY')
+    'social_gamification': 'sqlite:///' + file_path_win + '\\' + config('DB_SOCIAL_GAMIFICATION_NAME'),
+    'activity': 'sqlite:///' + file_path_win + '\\' +  config('DB_ACTIVITY_NAME')
     }
     
 
-class DevelopmentConfigUbu(DevelopmentConfig):
+class DevelopmentConfigUbuPg(DevelopmentConfig):
     # # конфиг для убунту дома
     SQLALCHEMY_DATABASE_URI = config('DB_ADMIM')
     SQLALCHEMY_BINDS = {
@@ -105,6 +106,16 @@ class DevelopmentConfigUbu(DevelopmentConfig):
         'social_gamification': config('DB_SOCIAL_GAMIFICATION'),
         'activity': config('DB_ACTIVITY')
     }
+
+class DevelopmentConfigUbuSL(DevelopmentConfig):
+    # # конфиг для убунту дома
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + file_path_lin + config('DB_ADMIM_NAME')
+    SQLALCHEMY_BINDS = {
+        # 'admin': config('DB_ADMIM'),
+        'social_gamification': 'sqlite:///' + file_path_lin + config('DB_SOCIAL_GAMIFICATION_NAME'),
+        'activity': 'sqlite:///' + file_path_lin + config('DB_ACTIVITY_NAME')
+    }
+
 
 class TestingConfig(Config):
     TESTING = True

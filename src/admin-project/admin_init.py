@@ -39,7 +39,7 @@ def security_context_processor():
     
     
 from flask_security.proxies import _security
-from flask_security.decorators import unauth_csrf, auth_required
+from flask_security.decorators import unauth_csrf, auth_required, roles_accepted
 from flask_security.forms import build_form_from_request
 from flask_security.utils import view_commit
 from flask_security.registerable import register_user
@@ -55,6 +55,7 @@ register_bp = Blueprint('register', __name__, url_prefix='/admin')
 @register_bp.route('/register', methods=['GET', 'POST'])
 @unauth_csrf()
 @auth_required()
+@roles_accepted('root_admin')
 def register() -> ResponseValue:
     form_name = "register_form"
     form = build_form_from_request(form_name)
@@ -87,9 +88,14 @@ from .social_gamification.views import (
     SGPurchaseView, SGTipView
 )
 
+from .activity.views import (
+    ActivityView
+)
+
 myadmin.add_views(
     MyAdminListView, # MyAdminTelephoneView,
     MyAdminRoleView, MyAdminAnalyticsView,
     SGUserView, SGMarketUserView,
-    SGPurchaseView, SGTipView
+    SGPurchaseView, SGTipView,
+    ActivityView
 )

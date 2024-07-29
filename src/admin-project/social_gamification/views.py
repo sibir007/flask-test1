@@ -1,8 +1,4 @@
-from flask_security.core import current_user
-
-
 from .model import User, MarketUser, Purchase, Tip
-# from .model import User, MarketUser, Purchase, Tip
 from flask_admin import BaseView
 from flask_admin.contrib import sqla
 # from flask import Flask, url_for, redirect, request, abort, current_app

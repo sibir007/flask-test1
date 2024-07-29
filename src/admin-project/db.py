@@ -9,7 +9,7 @@ import click
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import DeclarativeBase, mapped_column, Mapped
 
-from flaskr.db import init_app
+# from flaskr.db import init_app
 
 intpk = Annotated[int, mapped_column(primary_key=True)]
 timstamp = Annotated[

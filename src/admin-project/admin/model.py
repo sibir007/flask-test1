@@ -16,6 +16,8 @@ from flask_security import UserMixin, RoleMixin, hash_password, Security
 
 
 class MyAdmin(PkCereatedAtMixin, UserMixin, db.Model):
+    
+    # __bind_key__ = 'admin'
 
     password: Mapped[str]
     email: Mapped[str]
@@ -46,6 +48,8 @@ class MyAdmin(PkCereatedAtMixin, UserMixin, db.Model):
     
 class Telephone(PkMixin, db.Model):
     
+    # __bind_key__ = 'admin'
+    
     telephone: Mapped[str]
     my_admin_id: Mapped[int] = mapped_column(ForeignKey('my_admin.id'))
     admin: Mapped['MyAdmin'] = relationship(back_populates='phones')
@@ -60,6 +64,7 @@ class Telephone(PkMixin, db.Model):
 class Role(PkMixin, RoleMixin, db.Model):
     """таблица раолей админов для организации доступа
     к администрируемым сущьностям"""
+    # __bind_key__ = 'admin'
 
     __tablename__ = 'role'
     
@@ -81,6 +86,7 @@ admin_role = db.Table(
     db.Model.metadata,
     Column('role_id', ForeignKey('role.id'), primary_key=True),
     Column('my_admin_id', ForeignKey('my_admin.id'), primary_key=True),
+    # __bind_key__ = 'admin'
 )
 
 
