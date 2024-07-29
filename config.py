@@ -36,6 +36,7 @@ class SQLALCHMY_CONFIG_KEYS():
     
 file_path_win = os.path.abspath(os.getcwd()) + '\\db_data'
 file_path_lin = os.path.abspath(os.getcwd()) + 'db_data/'
+file_path_lin2 = os.path.abspath(os.getcwd())
 
 
 
@@ -109,11 +110,11 @@ class DevelopmentConfigUbuPg(DevelopmentConfig):
 
 class DevelopmentConfigUbuSL(DevelopmentConfig):
     # # конфиг для убунту дома
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + file_path_lin + config('DB_ADMIM_NAME')
+    SQLALCHEMY_DATABASE_URI = 'sqlite://' + file_path_lin2 + '/' +  config('DB_ADMIM_NAME')
     SQLALCHEMY_BINDS = {
         # 'admin': config('DB_ADMIM'),
-        'social_gamification': 'sqlite:///' + file_path_lin + config('DB_SOCIAL_GAMIFICATION_NAME'),
-        'activity': 'sqlite:///' + file_path_lin + config('DB_ACTIVITY_NAME')
+        'social_gamification': 'sqlite://' + file_path_lin2  + '/' + config('DB_SOCIAL_GAMIFICATION_NAME'),
+        'activity': 'sqlite://' + file_path_lin2 + '/' + config('DB_ACTIVITY_NAME')
     }
 
 

@@ -43,12 +43,15 @@ RUN adduser \
     # Copy the source code into the container.
 COPY ./dist/admin_project-0.0.1-py3-none-any.whl ./.env ./config.py ./
 COPY ./db_data ./db_data
-RUN chown appuser:appuser db_data/activity.sqlite
-RUN chown appuser:appuser  db_data/admin.sqlite 
-RUN chown appuser:appuser db_data/social_gamification.sqlite
-RUN chmod 777 db_data/activity.sqlite
-RUN chmod 777  db_data/admin.sqlite 
-RUN chmod 777 db_data/social_gamification.sqlite
+COPY ./activity.sqlite .
+COPY ./admin.sqlite .
+COPY ./social_gamification.sqlite .
+# RUN chown appuser:appuser db_data/activity.sqlite
+# RUN chown appuser:appuser  db_data/admin.sqlite 
+# RUN chown appuser:appuser db_data/social_gamification.sqlite
+# RUN chmod 777 db_data/activity.sqlite
+# RUN chmod 777  db_data/admin.sqlite 
+# RUN chmod 777 db_data/social_gamification.sqlite
     # RUN  python -m venv .venv
 # RUN source ./.venv/bin/activate
 RUN python3 -m pip install --upgrade pip
@@ -61,7 +64,7 @@ RUN  python3 -m pip install admin_project-0.0.1-py3-none-any.whl
 # RUN flask --app my-admin build-test-admin-sg-ac-db
 # RUN flask build-test-admin-sg-ac-db
 RUN pip install waitress
-
+# RUN chmod 777 /usr/local/var
 # 
 USER appuser
 # Expose the port that the application listens on.
@@ -72,7 +75,8 @@ EXPOSE 5000
 # CMD  pwd  && flask --app  my_admin  run --debug
 # CMD pip list
 # CMD ls -la db_data
-CMD ls -la db_data && flask --app admin-project build-test-admin-sg-ac-db && flask run --debug
+CMD ls -la && flask --app admin-project build-test-admin-sg-ac-db && flask run --debug
+# CMD chmod 777 /usr/local/var && ls -la && flask --app admin-project build-test-admin-sg-ac-db && flask run --debug
 # CMD flask --app my-admin build-test-admin-sg-ac-db && waitress-serve --call 'my-admin:create_app'
 
 # CMD  pwd  && python3 -m flask --app my_admin run --debug
