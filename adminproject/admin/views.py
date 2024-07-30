@@ -24,6 +24,8 @@ class MyAdminBase(MyViewsBase):
     
     
 class MyAdminModelView(MyAdminBase):
+    
+    list_template = 'admin/model/register_list.html'
 
     # column_editable_list = ('email', 'phones', 'roles')
     column_list = ('email', 'phones', 'roles')

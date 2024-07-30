@@ -34,7 +34,8 @@ class SQLALCHMY_CONFIG_KEYS():
 # A dictionary of keyword args to send to create_engine(). 
 # See also engine_options to SQLAlchemy.
     
-file_path_win = os.path.abspath(os.getcwd()) + '\\db_data'
+file_path_win = os.path.abspath(os.getcwd())
+# file_path_win = os.path.abspath(os.getcwd()) + '\\db_data'
 file_path_lin = os.path.abspath(os.getcwd()) + 'db_data/'
 file_path_lin2 = os.path.abspath(os.getcwd())
 
@@ -91,7 +92,7 @@ class DevelopmentConfig(Config):
 class DevelopmentConfigWin(DevelopmentConfig):
     # конфиг для виндовс на работе
     # SQLALCHEMY_DATABASE_URI = config('DB_DEFAULT')
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + file_path_win + '\\' + config('DB_ADMIM_NAME')
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + file_path_win + '\\' + config('DB_ADMIN_NAME')
     SQLALCHEMY_BINDS = {
     # 'admin': 'sqlite:///' + file_path + '\\' + config('DB_ADMIM'),
     'social_gamification': 'sqlite:///' + file_path_win + '\\' + config('DB_SOCIAL_GAMIFICATION_NAME'),
