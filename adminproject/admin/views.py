@@ -15,7 +15,7 @@ class AnalyticsView(MyModelsMixin, BaseView):
 
     @expose('/')
     def index(self):
-        return self.render('analytics_index.html')
+        return self.render('admin/analytics_index.html')
 
 class MyAdminBase(MyViewsBase):
     """базовый класс для админ видов"""

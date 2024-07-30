@@ -9,7 +9,7 @@ import os
 
 logging.basicConfig(level=logging.DEBUG, format=f'%(asctime)s %(levelname)s %(name)s %(threadName)s : %(message)s')
 file_path_lin2 = os.path.abspath(os.getcwd())
-print(f"-------------{file_path_lin2}------------------")
+logging.debug(f"-------------{file_path_lin2}------------------")
 DOTENV_FILE = './.env'
 config =  Config(RepositoryEnv(DOTENV_FILE))
 
@@ -24,8 +24,9 @@ def create_app():
     app.logger.debug(f"APP_SETTINGS: {config('APP_SETTINGS')}")
     app.logger.error('error logger')
     # toolbar.init_app(app)
-    for k, v in app.config.items():
-        print(f"{k}: {v}")
+    if app.debug:
+        for k, v in app.config.items():
+            print(f"{k}: {v}")
     # app.debug = True
     
     migrate.init_app(app=app)
@@ -47,13 +48,13 @@ def create_app():
     def index():
         return redirect(url_for('admin.index'))
     
-    @app.errorhandler(404)
-    @app.errorhandler(405)
-    def _handle_api_error(ex):
-        if request.path.startswith('/api/'):
-            return jsonify(error=str(ex)), ex.code
-        else:
-            return ex
+    # @app.errorhandler(404)
+    # @app.errorhandler(405)
+    # def _handle_api_error(ex):
+    #     if request.path.startswith('/api/'):
+    #         return jsonify(error=str(ex)), ex.code
+    #     else:
+    #         return ex
     
     return app
 

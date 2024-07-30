@@ -21,7 +21,8 @@ class MyAdminIndexView(AdminIndexView):
 myadmin = Admin(
     name='CRYPTO MENTORS ADMIN',
     template_mode='bootstrap4',
-    index_view=MyAdminIndexView()
+    index_view=MyAdminIndexView(),
+    base_template='admin/master.html'
 )
 
 
@@ -80,7 +81,7 @@ def register() -> ResponseValue:
 
 
 from .admin.views import (
-    MyAdminListView, MyAdminTelephoneView,
+    MyAdminListView, # MyAdminTelephoneView,
     MyAdminRoleView, MyAdminAnalyticsView
     )
 from .social_gamification.views import (
