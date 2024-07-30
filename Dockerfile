@@ -55,7 +55,7 @@ python3 -m pip install  adminproject-0.0.1-py3-none-any.whl waitress
 RUN mkdir /usr/local/var && chown appuser:appuser /usr/local/var
 # RUN flask --app my-admin build-test-admin-sg-ac-db
 # RUN flask build-test-admin-sg-ac-db
-RUN pip install waitress
+# RUN pip install waitress
 # RUN chmod 777 /usr/local/var
 # 
 USER appuser
@@ -71,7 +71,7 @@ EXPOSE 8080
 # CMD pip list
 # CMD ls -la db_data
 # CMD pip list && ls -la && flask --app admin-project build-test-admin-sg-ac-db && flask run --debug
-CMD pip list && ls -la && flask --app adminproject build-test-admin-sg-ac-db && waitress-serve --call adminproject:create_app
+CMD pip list &&  ls -la && flask --app adminproject build-test-admin-sg-ac-db && waitress-serve --call adminproject:create_app
 # CMD chmod 777 /usr/local/var && ls -la && flask --app admin-project build-test-admin-sg-ac-db && flask run --debug
 # CMD flask --app my-admin build-test-admin-sg-ac-db && waitress-serve --call 'my-admin:create_app'
 

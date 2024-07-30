@@ -109,7 +109,7 @@ class DevelopmentConfigUbuPg(DevelopmentConfig):
         'activity': config('DB_ACTIVITY')
     }
 
-class DevelopmentConfigUbuSL(DevelopmentConfig):
+class DevelopmentConfigUbuSl(DevelopmentConfig):
     # # конфиг для убунту дома
     SQLALCHEMY_DATABASE_URI = config('DB_ADMIM_SL')
     SQLALCHEMY_BINDS = {
